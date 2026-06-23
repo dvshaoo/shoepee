@@ -48,7 +48,7 @@ if ($id) {
 // Retrieve items from the 
 $favSql = "SELECT p.*, f.* FROM tbl_products p
             JOIN tbl_favorites f ON p.prod_id = f.prod_id
-            WHERE f.user_id = ? ORDER BY f.id DESC";
+            WHERE f.user_id = ? ORDER BY f.fav_id DESC";
 $stmtFav = $con->prepare($favSql);
 $stmtFav->bind_param("i", $id);
 $stmtFav->execute();

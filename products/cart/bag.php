@@ -45,7 +45,7 @@ if ($id) {
 // Retrieve items from the bag
 $bagSql = "SELECT p.*, b.* FROM tbl_products p
             JOIN tbl_bag b ON p.prod_id = b.prod_id
-            WHERE b.user_id = ? ORDER BY b.id DESC";
+            WHERE b.user_id = ? ORDER BY b.bag_id DESC";
 $stmtBag = $con->prepare($bagSql);
 $stmtBag->bind_param("i", $id);
 $stmtBag->execute();
