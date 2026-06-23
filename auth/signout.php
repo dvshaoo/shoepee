@@ -1,16 +1,11 @@
 <?php
-//signout.php
-
-// Start the session
 session_start();
 
-$redirect = ($_SESSION['access'] === 'admin' ? '../admin/auth.admin.php' : '../auth/signin.php');
+$redirect = (isset($_SESSION['access']) && $_SESSION['access'] === 'admin') ? '/shoepee/admin/auth.admin.php' : '/shoepee/auth/signin.php';
 
-unset($_SESSION['UserLogin']);
-unset($_SESSION['username']);
-unset($_SESSION['access']);
-unset($_SESSION['id']);
+session_unset();
+session_destroy();
 
 header("Location: $redirect");
-
+exit();
 ?>

@@ -8,7 +8,7 @@ $con = connection();
 
 // Check if the user is logged in
 if (!isset($_SESSION['UserLogin'])) {
-    header("Location: /shopee/auth/signin.php");
+    header("Location: /shoepee/auth/signin.php");
     exit();
 }
 

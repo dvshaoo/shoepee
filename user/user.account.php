@@ -7,7 +7,7 @@ include_once(__DIR__ . "/../connections/head.php");
 $con = connection();
 
 if (!isset($_SESSION['UserLogin'])) {
-    header("Location: ../auth/signin.php");
+    header("Location: /shoepee/auth/signin.php");
     exit();
 }
 
@@ -64,18 +64,10 @@ if ($id) {
             $errorConfirmVerify = "Wrong verification";
         }
 
-        $checkPasswordQuery = "SELECT * FROM tbl_users WHERE password = ?";
-        $stmtPass = $con->prepare($checkPasswordQuery);
-        $stmtPass->bind_param("s", $confirmPassword);
-        $stmtPass->execute();
-        $resultPassword = $stmtPass->get_result();
-
         $hashedPassword = $user['password'];
 
-        if ($resultPassword->num_rows === 0) {
-            if (!password_verify($confirmPassword, $hashedPassword)) {
-                $errorConfirmPassword = "Invalid password";
-            }
+        if (!password_verify($confirmPassword, $hashedPassword)) {
+            $errorConfirmPassword = "Invalid password";
         }
 
         // If email, password, and verification are correct, proceed with deletion
@@ -109,7 +101,7 @@ if ($id) {
             $stmtDeleteUser->bind_param("si", $softDeleteAccount, $id);
             $stmtDeleteUser->execute();
 
-            header("Location: ../auth/signout.php");
+            header("Location: /shoepee/auth/signout.php");
             exit();
         }
     }
@@ -219,13 +211,13 @@ if ($id) {
                         }
                     } else {
                         // if the size is too large EXIT
-                        header("Location: ../user/user.account.php?status=error&type=file_size");
+                        header("Location: /shoepee/user/user.account.php?status=error&type=file_size");
                         exit();
                     }
                 } else {
                     // if the file type is not matched EXIT
                     $file_name = "";
-                    header("Location: ../user/user.account.php?status=error&type=file_type");
+                    header("Location: /shoepee/user/user.account.php?status=error&type=file_type");
                     exit();
                 }
             } else if (empty($newFileSelected)) {
@@ -245,12 +237,10 @@ if ($id) {
             $stmt->bind_param("sssi", $newUsername, $newEmail, $file_name, $id);
             $stmt->execute();
 
-            sleep(3);
-
             $success = "Update Successful!";
             $_SESSION['status'] = $success;
 
-            header("Location: ../user/user.account.php?status=success");
+            header("Location: /shoepee/user/user.account.php?status=success");
             exit();
         }
     }
@@ -276,18 +266,11 @@ if ($id) {
         $userPass = $currentUser["password"];
         // echo $hashedPassword . "<br>";
         if (!password_verify($oldPassword, $userPass)) {
-            // $errorOldPass = "Invalid old password id = " . $id;
             $errorOldPass = "Invalid old password";
         }
 
-        $checkPasswords = ($con->query("SELECT password FROM tbl_users")->num_rows > 0) ? $con->query("SELECT password FROM tbl_users")->fetch_all(MYSQLI_ASSOC) : [];
-
-        foreach ($checkPasswords as $password) {
-            $hashedPassword = $password["password"];
-
-            if (password_verify($newPassword, $hashedPassword)) {
-                $errorNewPass = "Invalid new password";
-            }
+        if ($newPassword === $oldPassword) {
+            $errorNewPass = "New password must be different from old password";
         }
 
         if ($newPassword != $confirmPassword) {
@@ -328,7 +311,7 @@ if ($id) {
     <nav>
         <div class="logo">
             <div class="logo-icon">
-                <img src="../assets/images/shoepee_logo.png" alt="">
+                <img src="/shoepee/assets/images/shoepee_logo.png" alt="">
             </div>
             <div class="logo-text">
                 <p>SHOEPEE</p>
@@ -342,12 +325,12 @@ if ($id) {
                 <div class="nav-menu-container" type="mobile">
                     <ul class="nav-menu">
                         <li class="nav-item">
-                            <a href="../home/index.php" class="nav-links" title="Shop">
+                            <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                                 <span class="material-symbols-outlined">storefront</span> Shop
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/bag.php" class="nav-links" title="Bag">
+                            <a href="/shoepee/products/cart/bag.php" class="nav-links" title="Bag">
                                 <span class="material-symbols-outlined">shopping_bag</span> Bag
                                 <?php if ($totalItems != 0) { ?>
                                     <span class="badge">
@@ -357,7 +340,7 @@ if ($id) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/favorites/favorites.php" class="nav-links" title="Favorites">
+                            <a href="/shoepee/products/favorites/favorites.php" class="nav-links" title="Favorites">
                                 <span class="material-symbols-outlined">favorite</span> Favorites
                                 <?php if ($totalFavItems != 0) { ?>
                                     <span class="badge">
@@ -367,7 +350,7 @@ if ($id) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/checkout.php" class="nav-links" title="Checkout">
+                            <a href="/shoepee/products/cart/checkout.php" class="nav-links" title="Checkout">
                                 <span class="material-symbols-outlined">local_shipping</span> Checkout
                                 <?php if ($totalCheckoutItem != 0) { ?>
                                     <span class="badge">
@@ -381,39 +364,39 @@ if ($id) {
                         <div class="user-account" title="Account">
                             <div class="account-icon">
                                 <?php if (!empty($user['profile_img'])) { ?>
-                                    <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                                    <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                                 <?php } else { ?>
                                     <span class="material-symbols-outlined">person</span>
                                 <?php } ?>
                             </div>
                             <div class="account-name">
-                                <a href="../user/user.account.php" target="_self">
+                                <a href="/shoepee/user/user.account.php" target="_self">
                                     <?php echo $user['username']; ?>
                                 </a>
                             </div>
                         </div>
                         <div class="account-action">
-                            <a class="log-out" href="../auth/signout.php" target="_self">
+                            <a class="log-out" href="/shoepee/auth/signout.php" target="_self">
                                 <span class="material-symbols-outlined">logout</span>Log out
                             </a>
                         </div>
                     </div>
                 </div>
             <?php } else {
-                header("Location: ../auth/signin.php");
+                header("Location: /shoepee/auth/signin.php");
             } ?>
         <?php } else { ?>
             <div class="nav-menu-container" type="mobile">
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="../home/index.php" class="nav-links" title="Shop">
+                        <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                             <span class="material-symbols-outlined">storefront</span> Shop
                         </a>
                     </li>
                 </ul>
                 <div class="account-section">
                     <div class="account-action">
-                        <a href="../auth/signin.php" target="_self">
+                        <a href="/shoepee/auth/signin.php" target="_self">
                             <span class="material-symbols-outlined">login</span>
                             Sign in
                         </a>
@@ -426,12 +409,12 @@ if ($id) {
                 <?php if (isset($_SESSION['UserLogin'])) { ?>
                     <?php if ($_SESSION['access'] == 'user') { ?>
                         <li class="nav-item">
-                            <a href="../home/index.php" class="nav-links" title="Shop">
+                            <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                                 <span class="material-symbols-outlined">storefront</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/bag.php" class="nav-links" title="Bag">
+                            <a href="/shoepee/products/cart/bag.php" class="nav-links" title="Bag">
                                 <span class="material-symbols-outlined">shopping_bag</span>
                                 <?php if ($totalItems != 0) { ?>
                                     <span class="badge">
@@ -441,7 +424,7 @@ if ($id) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/favorites/favorites.php" class="nav-links" title="Favorites">
+                            <a href="/shoepee/products/favorites/favorites.php" class="nav-links" title="Favorites">
                                 <span class="material-symbols-outlined">favorite</span>
                                 <?php if ($totalFavItems != 0) { ?>
                                     <span class="badge">
@@ -451,7 +434,7 @@ if ($id) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/checkout.php" class="nav-links" title="Checkout">
+                            <a href="/shoepee/products/cart/checkout.php" class="nav-links" title="Checkout">
                                 <span class="material-symbols-outlined">local_shipping</span>
                                 <?php if ($totalCheckoutItem != 0) { ?>
                                     <span class="badge">
@@ -463,7 +446,7 @@ if ($id) {
                         <li class="nav-item account" title="Account">
                             <div class="account-icon">
                                 <?php if (!empty($user['profile_img'])) { ?>
-                                    <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                                    <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                                 <?php } else { ?>
                                     <span class="material-symbols-outlined">person</span>
                                 <?php } ?>
@@ -475,7 +458,7 @@ if ($id) {
                             </div>
                         </li>
                     <?php } else {
-                        header("Location: ../auth/signin.php");
+                        header("Location: /shoepee/auth/signin.php");
                     } ?>
                 <?php } else { ?>
                     <li class="nav-item">
@@ -486,10 +469,10 @@ if ($id) {
                     <?php if ($_SESSION['access'] == 'user') { ?>
                         <div class="account-link-container" card-type="with-account">
                             <div class="account-link">
-                                <a href="../user/user.account.php" class="nav-links" target="_self">
+                                <a href="/shoepee/user/user.account.php" class="nav-links" target="_self">
                                     Profile
                                 </a>
-                                <a href="../auth/signout.php" class="nav-links" target="_self">
+                                <a href="/shoepee/auth/signout.php" class="nav-links" target="_self">
                                     Log out
                                 </a>
                             </div>
@@ -498,7 +481,7 @@ if ($id) {
                 <?php } else { ?>
                     <div class="account-link-container" card-type="no-account">
                         <div class="account-link">
-                            <a href="../auth/signin.php" class="nav-links" target="_self">
+                            <a href="/shoepee/auth/signin.php" class="nav-links" target="_self">
                                 Sign In
                             </a>
                         </div>
@@ -527,11 +510,11 @@ if ($id) {
         </div>
         <div class="user-account-header">
             <div class="user-account-profile-img">
-                <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
             </div>
             <div class="user-account-username-email">
                 <span class="username">
-                    <a href="../user/user.account.php"></a>
+                    <a href="/shoepee/user/user.account.php"></a>
                     <?php echo $user['username']; ?>
                 </span>
                 <span class="email">
@@ -576,7 +559,7 @@ if ($id) {
                 <div class="profile">
                     <div class="user-account-profile">
                         <div class="user-account-profile-img">
-                            <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                            <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                             <a href="" id="uploadLink">
                                 <span class="material-symbols-outlined">edit</span> Edit
                             </a>
@@ -739,9 +722,9 @@ if ($id) {
                                         ?>
                                         <div class="ordered-item">
                                             <div class="ordered-item-image" <?php echo $orderItem['stock_quantity'] < 20 || $orderItem['product_archive'] === 'TRUE' ? 'title="Item unavailable"' : '' ?>>
-                                                <a href="../products/prod.view.php?prod_id=<?php echo $orderItem['prod_id']; ?>"
+                                                <a href="/shoepee/products/prod.view.php?prod_id=<?php echo $orderItem['prod_id']; ?>"
                                                     <?php echo $orderItem['stock_quantity'] < 20 || $orderItem['product_archive'] === 'TRUE' ? 'style="display: none;"' : '' ?>></a>
-                                                <img src="../assets/uploads/<?php echo $orderItem['img_url']; ?>" alt=""
+                                                <img src="/shoepee/assets/uploads/<?php echo $orderItem['img_url']; ?>" alt=""
                                                     height="100" width="100">
                                             </div>
                                             <div class="ordered-item-details">
@@ -766,8 +749,8 @@ if ($id) {
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="module" src="../assets/JS/script.js"></script>
-    <script type="module" src="../assets/JS/nav.js"></script>
+    <script type="module" src="/shoepee/assets/JS/script.js"></script>
+    <script type="module" src="/shoepee/assets/JS/nav.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 

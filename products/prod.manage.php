@@ -10,7 +10,7 @@ $con = connection();
 
 if (!isset($_SESSION['UserLogin']))
 {
-    header("Location: ../admin/auth.admin.php");
+    header("Location: /shoepee/admin/auth.admin.php");
     exit();
 }
 
@@ -27,17 +27,33 @@ if ($id) {
     $search = isset($_GET['querysearch']) ? $_GET['querysearch'] : '';
     $filter = isset($_GET['queryfilter']) ? $_GET['queryfilter'] : '';
     
+    $baseSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE'";
+    $conditions = "";
+    $params = [];
+    $types = "";
+    
     if ($search && $filter) {
-        $prodSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' AND brand LIKE '%$filter' AND model_name LIKE '%$search%' ORDER BY RAND()";
-    } elseif ($search && empty($filter)) {
-        $prodSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' AND model_name LIKE '%$search%' ORDER BY RAND()";
-    } elseif (empty($search) && $filter) {
-        $prodSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' AND brand LIKE '%$filter%' ORDER BY RAND()";
-    } else {
-        $prodSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' ORDER BY RAND()";
+        $conditions = " AND brand LIKE ? AND model_name LIKE ?";
+        $params[] = "%$filter%";
+        $params[] = "%$search%";
+        $types = "ss";
+    } elseif ($search) {
+        $conditions = " AND model_name LIKE ?";
+        $params[] = "%$search%";
+        $types = "s";
+    } elseif ($filter) {
+        $conditions = " AND brand LIKE ?";
+        $params[] = "%$filter%";
+        $types = "s";
     }
     
-    $products = ($con->query($prodSql)->num_rows > 0) ? $con->query($prodSql)->fetch_all(MYSQLI_ASSOC) : [];
+    $prodSql = $baseSql . $conditions . " ORDER BY RAND()";
+    $stmtProd = $con->prepare($prodSql);
+    if (!empty($params)) {
+        $stmtProd->bind_param($types, ...$params);
+    }
+    $stmtProd->execute();
+    $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 if (isset($_POST["done-success"]))
@@ -61,7 +77,7 @@ if (isset($_POST["done-success"]))
     <nav>
         <div class="logo">
             <div class="logo-icon">
-                <img src="../assets/images/shoepee_logo.png" alt="">
+                <img src="/shoepee/assets/images/shoepee_logo.png" alt="">
             </div>
             <div class="logo-text">
                 <p>SHOEPEE</p>
@@ -75,17 +91,17 @@ if (isset($_POST["done-success"]))
                 <div class="nav-menu-container" type="mobile">
                     <ul class="nav-menu">
                         <li class="nav-item">
-                            <a href="../products/prod.manage.php" class="nav-links" title="All Products">
+                            <a href="/shoepee/products/prod.manage.php" class="nav-links" title="All Products">
                                 <span class="material-symbols-outlined">view_cozy</span> All Products
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.add.php" class="nav-links" title="Add Products">
+                            <a href="/shoepee/products/prod.add.php" class="nav-links" title="Add Products">
                                 <span class="material-symbols-outlined">library_add</span> Add Item
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.archive.list.php" class="nav-links" title="Archived Products">
+                            <a href="/shoepee/products/prod.archive.list.php" class="nav-links" title="Archived Products">
                                 <span class="material-symbols-outlined">archive</span> Archived Products
                             </a>
                         </li>
@@ -102,14 +118,14 @@ if (isset($_POST["done-success"]))
                             </div>
                         </div>
                         <div class="account-action">
-                            <a class="log-out" href="../auth/signout.php" target="_self">
+                            <a class="log-out" href="/shoepee/auth/signout.php" target="_self">
                                 <span class="material-symbols-outlined">logout</span>Log out
                             </a>
                         </div>
                     </div>
                 </div>
             <?php } else {
-                header("Location: ../auth/signin.php");
+                header("Location: /shoepee/auth/signin.php");
             } ?>
         <?php } ?>
         <div class="nav-menu-container" type="desktop">
@@ -125,24 +141,24 @@ if (isset($_POST["done-success"]))
                             </form>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.manage.php" class="nav-links" title="All Products">
+                            <a href="/shoepee/products/prod.manage.php" class="nav-links" title="All Products">
                                 <span class="material-symbols-outlined">view_cozy</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.add.php" class="nav-links" title="Add Item">
+                            <a href="/shoepee/products/prod.add.php" class="nav-links" title="Add Item">
                                 <span class="material-symbols-outlined">library_add</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.archive.list.php" class="nav-links" title="Archived Products">
+                            <a href="/shoepee/products/prod.archive.list.php" class="nav-links" title="Archived Products">
                                 <span class="material-symbols-outlined">archive</span>
                             </a>
                         </li>
                         <li class="nav-item account" title="Admin Account">
                             <div class="account-icon">
                                 <?php if (!empty($user['profile_img'])) { ?>
-                                    <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                                    <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                                 <?php } else { ?>
                                     <span class="material-symbols-outlined">shield_person</span>
                                 <?php } ?>
@@ -154,7 +170,7 @@ if (isset($_POST["done-success"]))
                             </div>
                         </li>
                     <?php } else { ?>
-                        <?php header("Location: ../auth/signin.php"); ?>
+                        <?php header("Location: /shoepee/auth/signin.php"); ?>
                     <?php } ?>
                 <?php } else { ?>
                     <li class="nav-item">
@@ -165,7 +181,7 @@ if (isset($_POST["done-success"]))
                     <?php if ($_SESSION['access'] === 'admin') { ?>
                         <div class="account-link-container" card-type="with-account">
                             <div class="account-link">
-                                <a href="../auth/signout.php" class="nav-links" target="_self">
+                                <a href="/shoepee/auth/signout.php" class="nav-links" target="_self">
                                     Log out
                                 </a>
                             </div>
@@ -174,7 +190,7 @@ if (isset($_POST["done-success"]))
                 <?php } else { ?>
                     <div class="account-link-container" card-type="no-account">
                         <div class="account-link">
-                            <a href="../auth/signin.php" class="nav-links" target="_self">
+                            <a href="/shoepee/auth/signin.php" class="nav-links" target="_self">
                                 Sign In
                             </a>
                         </div>
@@ -197,14 +213,14 @@ if (isset($_POST["done-success"]))
             <div class="prod-card">
                 <div class="brand-icon">
                     <?php if ($product['brand'] === 'Nike') { ?>
-                        <img class="brand-icon-img" src="../assets/images/src/brand_logos/Nike_logo.png"
+                        <img class="brand-icon-img" src="/shoepee/assets/images/src/brand_logos/Nike_logo.png"
                             alt="<?php echo $product['brand']; ?> logo">
                     <?php } else if ($product['brand'] === 'Adidas') { ?>
-                            <img class="brand-icon-img" src="../assets/images/src/brand_logos/Adidas_logo.png"
+                            <img class="brand-icon-img" src="/shoepee/assets/images/src/brand_logos/Adidas_logo.png"
                                 alt="<?php echo $product['brand']; ?> logo">
                     <?php } ?>
                 </div>
-                <img class="prod-img" src="../assets/uploads/<?php echo $product['img_url']; ?>"
+                <img class="prod-img" src="/shoepee/assets/uploads/<?php echo $product['img_url']; ?>"
                     alt="<?php echo $product['model_name']; ?>">
                 <div class="prod-card-description">
                     <h4>
@@ -215,12 +231,12 @@ if (isset($_POST["done-success"]))
                         <?php echo "Stock: " . $product['stock_quantity']; ?>
                     </p>
                 </div>
-                <a href="../products/prod.edit.php?prod_id=<?php echo $product['prod_id'] ?>"></a>
+                <a href="/shoepee/products/prod.edit.php?prod_id=<?php echo $product['prod_id'] ?>"></a>
             </div>
         <?php endforeach; ?>
     </div>
 </body>
-<script type="module" src="../assets/JS/script.js"></script>
-<script type="module" src="../assets/JS/nav.js"></script>
+<script type="module" src="/shoepee/assets/JS/script.js"></script>
+<script type="module" src="/shoepee/assets/JS/nav.js"></script>
 
 </html>

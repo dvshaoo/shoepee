@@ -70,20 +70,8 @@ if (isset($_POST['signup'])) {
         $stmtEmail->execute();
 
         if ($stmtEmail->get_result()->num_rows > 0) {
-            $errorEmail = "Invalid Email";
+            $errorEmail = "Email already used";
         }
-
-        $passwords = ($con->query("SELECT password FROM tbl_users")->num_rows > 0) ? $con->query("SELECT password FROM tbl_users")->fetch_all(MYSQLI_ASSOC) : [];
-
-        foreach ($passwords as $passwordd):
-        
-            $hashedPassword = $passwordd["password"];
-            // echo $hashedPassword . "<br>";
-            if (password_verify($password, $hashedPassword)) {
-                $errorPassword = "Invalid password";
-            }
-
-        endforeach;
 
         if ($password !== $confirmPassword) {
             $errorConfirmPassword = "Passwords do not match!";
@@ -98,11 +86,11 @@ if (isset($_POST['signup'])) {
             $stmtInsert->execute();
 
             $_SESSION['id'] = $stmtInsert->insert_id;
-            $_SESSION['UserLogin'] = $email;
+            $_SESSION['username'] = $username;
+            $_SESSION['UserLogin'] = $hashedPassword;
             $_SESSION['access'] = $access;
-            $_SESSION['account_status'] = $accountStatus;
 
-            header("Location: ../home/index.php");
+            header("Location: /shoepee/home/index.php");
             exit();
         }
     }
@@ -115,7 +103,7 @@ if (isset($_POST['signup'])) {
 
 <head>
     <?php echo $headContent; ?>
-    <link rel="stylesheet" href="../assets/CSS/signin-signup.css">
+    <link rel="stylesheet" href="/shoepee/assets/CSS/signin-signup.css">
     <title>SHOEPEE | SIGN UP</title>
 </head>
 
@@ -126,7 +114,7 @@ if (isset($_POST['signup'])) {
         </div>
         <div class="right-container">
             <div class="form-wrapper">
-                <img class="form-logo" src="../assets/images/shoepee_logo.png" alt="">
+                <img class="form-logo" src="/shoepee/assets/images/shoepee_logo.png" alt="">
                 <h1>CREATE ACCOUNT</h1>
                 <form class="signup" action="" method="POST">
                     <span class="error-text">
@@ -162,13 +150,13 @@ if (isset($_POST['signup'])) {
 
                     <button class="btn" value="signup" name="signup" type="submit">Create my account</button>
                     <span class="signin-link">
-                        Already have an account? <a class="btn-link" href="../auth/signin.php">sign in</a>
+                        Already have an account? <a class="btn-link" href="/shoepee/auth/signin.php">sign in</a>
                     </span>
                 </form>
             </div>
         </div>
     </div>
 </body>
-<script type="module" src="../assets/JS/script.js"></script>
+<script type="module" src="/shoepee/assets/JS/script.js"></script>
 
 </html>

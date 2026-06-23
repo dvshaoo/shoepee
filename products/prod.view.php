@@ -67,7 +67,7 @@ if (isset($_GET['prod_id'])) {
     
     // Return to index if the product is ARCHIVE OR stock quantity is less than zero from changing the value of prod_id in URL
     if ($products['product_archive'] === 'TRUE' || $products['stock_quantity'] < 20) {
-        header("Location: ../home/index.php");
+        header("Location: /shoepee/home/index.php");
     }
 }
 
@@ -81,7 +81,7 @@ if (isset($_POST["done"])) {
     {
         unset($_SESSION['status']);
         $status = '';
-        header("Location: ../products/cart/bag.php");
+        header("Location: /shoepee/products/cart/bag.php");
         exit();
     }
 
@@ -98,8 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $success = $products['model_name'] . " Added";
     
     $_SESSION['status'] = $success;
-    sleep(3);
-    header("Location: ../products/prod.view.php?prod_id=$prod_id");
+    header("Location: /shoepee/products/prod.view.php?prod_id=$prod_id");
     exit();
 }
 
@@ -112,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmt->bind_param("ii", $id, $prod_id);
     $stmt->execute();
     
-    header("Location: ../products/prod.view.php?prod_id=$prod_id");
+    header("Location: /shoepee/products/prod.view.php?prod_id=$prod_id");
     exit();
 
 } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'remove_to_favorites') {
@@ -121,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmt->bind_param("ii", $id, $prod_id);
     $stmt->execute();
 
-    header("Location: ../products/prod.view.php?prod_id=$prod_id");
+    header("Location: /shoepee/products/prod.view.php?prod_id=$prod_id");
     exit();
 }
 
@@ -152,7 +151,7 @@ $bagResult = $checkBagstmt->get_result();
     <nav>
         <div class="logo">
             <div class="logo-icon">
-                <img src="../assets/images/shoepee_logo.png" alt="">
+                <img src="/shoepee/assets/images/shoepee_logo.png" alt="">
             </div>
             <div class="logo-text">
                 <p>SHOEPEE</p>
@@ -166,12 +165,12 @@ $bagResult = $checkBagstmt->get_result();
                 <div class="nav-menu-container" type="mobile">
                     <ul class="nav-menu">
                         <li class="nav-item">
-                            <a href="../home/index.php" class="nav-links" title="Shop">
+                            <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                                 <span class="material-symbols-outlined">storefront</span> Shop
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/bag.php" class="nav-links" title="Bag">
+                            <a href="/shoepee/products/cart/bag.php" class="nav-links" title="Bag">
                                 <span class="material-symbols-outlined">shopping_bag</span> Bag
                                 <?php if ($totalItems != 0) { ?>
                                     <span class="badge">
@@ -181,7 +180,7 @@ $bagResult = $checkBagstmt->get_result();
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/favorites/favorites.php" class="nav-links" title="Favorites">
+                            <a href="/shoepee/products/favorites/favorites.php" class="nav-links" title="Favorites">
                                 <span class="material-symbols-outlined">favorite</span> Favorites
                                 <?php if ($totalFavItems != 0) { ?>
                                     <span class="badge">
@@ -191,7 +190,7 @@ $bagResult = $checkBagstmt->get_result();
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/checkout.php" class="nav-links" title="Checkout">
+                            <a href="/shoepee/products/cart/checkout.php" class="nav-links" title="Checkout">
                                 <span class="material-symbols-outlined">local_shipping</span> Checkout
                                 <?php if ($totalCheckoutItem != 0) { ?>
                                     <span class="badge">
@@ -205,39 +204,39 @@ $bagResult = $checkBagstmt->get_result();
                         <div class="user-account" title="Account">
                             <div class="account-icon">
                                 <?php if (!empty($user['profile_img'])) { ?>
-                                    <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                                    <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                                 <?php } else { ?>
                                     <span class="material-symbols-outlined">person</span>
                                 <?php } ?>
                             </div>
                             <div class="account-name">
-                                <a href="../user/user.account.php" target="_self">
+                                <a href="/shoepee/user/user.account.php" target="_self">
                                     <?php echo $user['username']; ?>
                                 </a>
                             </div>
                         </div>
                         <div class="account-action">
-                            <a class="log-out" href="../auth/signout.php" target="_self">
+                            <a class="log-out" href="/shoepee/auth/signout.php" target="_self">
                                 <span class="material-symbols-outlined">logout</span>Log out
                             </a>
                         </div>
                     </div>
                 </div>
             <?php } else {
-                header("Location: ../auth/signin.php");
+                header("Location: /shoepee/auth/signin.php");
             } ?>
         <?php } else { ?>
             <div class="nav-menu-container" type="mobile">
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="../home/index.php" class="nav-links" title="Shop">
+                        <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                             <span class="material-symbols-outlined">storefront</span> Shop
                         </a>
                     </li>
                 </ul>
                 <div class="account-section">
                     <div class="account-action">
-                        <a href="../auth/signin.php" target="_self">
+                        <a href="/shoepee/auth/signin.php" target="_self">
                             <span class="material-symbols-outlined">login</span>
                             Sign in
                         </a>
@@ -250,12 +249,12 @@ $bagResult = $checkBagstmt->get_result();
                 <?php if (isset($_SESSION['UserLogin'])) { ?>
                     <?php if ($_SESSION['access'] == 'user') { ?>
                         <li class="nav-item">
-                            <a href="../home/index.php" class="nav-links" title="Shop">
+                            <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                                 <span class="material-symbols-outlined">storefront</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/bag.php" class="nav-links" title="Bag">
+                            <a href="/shoepee/products/cart/bag.php" class="nav-links" title="Bag">
                                 <span class="material-symbols-outlined">shopping_bag</span>
                                 <?php if ($totalItems != 0) { ?>
                                     <span class="badge">
@@ -265,7 +264,7 @@ $bagResult = $checkBagstmt->get_result();
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/favorites/favorites.php" class="nav-links" title="Favorites">
+                            <a href="/shoepee/products/favorites/favorites.php" class="nav-links" title="Favorites">
                                 <span class="material-symbols-outlined">favorite</span>
                                 <?php if ($totalFavItems != 0) { ?>
                                     <span class="badge">
@@ -275,7 +274,7 @@ $bagResult = $checkBagstmt->get_result();
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/checkout.php" class="nav-links" title="Checkout">
+                            <a href="/shoepee/products/cart/checkout.php" class="nav-links" title="Checkout">
                                 <span class="material-symbols-outlined">local_shipping</span>
                                 <?php if ($totalCheckoutItem != 0) { ?>
                                     <span class="badge">
@@ -287,7 +286,7 @@ $bagResult = $checkBagstmt->get_result();
                         <li class="nav-item account" title="Account">
                             <div class="account-icon">
                                 <?php if (!empty($user['profile_img'])) { ?>
-                                    <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                                    <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                                 <?php } else { ?>
                                     <span class="material-symbols-outlined">person</span>
                                 <?php } ?>
@@ -299,11 +298,11 @@ $bagResult = $checkBagstmt->get_result();
                             </div>
                         </li>
                     <?php } else {
-                        header("Location: ../auth/signin.php");
+                        header("Location: /shoepee/auth/signin.php");
                     } ?>
                 <?php } else { ?>
                     <li class="nav-item">
-                        <a href="../home/index.php" class="nav-links" title="Shop">
+                        <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                             <span class="material-symbols-outlined">storefront</span>
                         </a>
                     </li>
@@ -315,10 +314,10 @@ $bagResult = $checkBagstmt->get_result();
                     <?php if ($_SESSION['access'] == 'user') { ?>
                         <div class="account-link-container" card-type="with-account">
                             <div class="account-link">
-                                <a href="../user/user.account.php" class="nav-links" target="_self">
+                                <a href="/shoepee/user/user.account.php" class="nav-links" target="_self">
                                     Profile
                                 </a>
-                                <a href="../auth/signout.php" class="nav-links" target="_self">
+                                <a href="/shoepee/auth/signout.php" class="nav-links" target="_self">
                                     Log out
                                 </a>
                             </div>
@@ -327,7 +326,7 @@ $bagResult = $checkBagstmt->get_result();
                 <?php } else { ?>
                     <div class="account-link-container" card-type="no-account">
                         <div class="account-link">
-                            <a href="../auth/signin.php" class="nav-links" target="_self">
+                            <a href="/shoepee/auth/signin.php" class="nav-links" target="_self">
                                 Sign In
                             </a>
                         </div>
@@ -361,7 +360,7 @@ $bagResult = $checkBagstmt->get_result();
         <div class="product-content">
             <div class="product-container-left">
                 <div class="product-img">
-                    <img src="../assets/uploads/<?php echo $products['img_url']; ?>" alt="">
+                    <img src="/shoepee/assets/uploads/<?php echo $products['img_url']; ?>" alt="">
                 </div>
             </div>
             <div class="product-container-right">
@@ -619,8 +618,8 @@ $bagResult = $checkBagstmt->get_result();
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="module" src="../assets/JS/script.js"></script>
-    <script type="module" src="../assets/JS/nav.js"></script>
+    <script type="module" src="/shoepee/assets/JS/script.js"></script>
+    <script type="module" src="/shoepee/assets/JS/nav.js"></script>
     <script>
     
     $(document).ready(function () {

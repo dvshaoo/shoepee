@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . "/../../connections/head.php");
 $con = connection();
 
 if (!isset($_SESSION['UserLogin'])) {
-    header("Location: /shopee/auth/signin.php");
+    header("Location: /shoepee/auth/signin.php");
     exit();
 }
 

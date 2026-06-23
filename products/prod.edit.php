@@ -11,7 +11,7 @@ if (isset($_SESSION['id'])) {
 }
 
 if (!isset($_SESSION['UserLogin'])) {
-    header("Location: ../admin/auth.admin.php");
+    header("Location: /shoepee/admin/auth.admin.php");
     exit();
 }
 
@@ -65,7 +65,7 @@ if (isset($_POST['archive'])) {
     }
     
     $_SESSION['status'] = $success;
-    header("Location: ../products/prod.edit.php?prod_id=$id&status=success&type=archive");
+    header("Location: /shoepee/products/prod.edit.php?prod_id=$id&status=success&type=archive");
     exit();
 }
 
@@ -176,13 +176,13 @@ if (isset($_POST['submit']))
                 }
             } else {
                 // if the size is too large EXIT
-                header("Location: ../products/prod.edit.php?prod_id=$id&status=fatal_error&type=file_size");
+                header("Location: /shoepee/products/prod.edit.php?prod_id=$id&status=fatal_error&type=file_size");
                 exit();
             }            
         } else {
             // if the file type is not matched EXIT
             $file_name = "";
-            header("Location: ../products/prod.edit.php?prod_id=$id&status=fatal_error&type=file_type");
+            header("Location: /shoepee/products/prod.edit.php?prod_id=$id&status=fatal_error&type=file_type");
             exit();
         }
     } else if (empty($newFileSelected)) {
@@ -219,12 +219,10 @@ if (isset($_POST['submit']))
     $stmt->bind_param("sssssssssssssssi", $brand, $model, $size8, $size85, $size9, $size95, $size10, $size105, $size11, $size115, $price, $stock, $description, $file_name, $status, $id);
     $stmt->execute();
 
-    sleep(3);
-    
     $success = "Update Successful!";
 
     $_SESSION['status'] = $success;
-    header("Location: ../products/prod.edit.php?prod_id=$id&status=success");
+    header("Location: /shoepee/products/prod.edit.php?prod_id=$id&status=success");
     exit();
 
 }
@@ -244,7 +242,7 @@ if (isset($_POST['submit']))
     <nav>
         <div class="logo">
             <div class="logo-icon">
-                <img src="../assets/images/shoepee_logo.png" alt="">
+                <img src="/shoepee/assets/images/shoepee_logo.png" alt="">
             </div>
             <div class="logo-text">
                 <p>SHOEPEE</p>
@@ -258,17 +256,17 @@ if (isset($_POST['submit']))
                 <div class="nav-menu-container" type="mobile">
                     <ul class="nav-menu">
                         <li class="nav-item">
-                            <a href="../products/prod.manage.php" class="nav-links" title="All Products">
+                            <a href="/shoepee/products/prod.manage.php" class="nav-links" title="All Products">
                                 <span class="material-symbols-outlined">view_cozy</span> All Products
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.add.php" class="nav-links" title="Add Products">
+                            <a href="/shoepee/products/prod.add.php" class="nav-links" title="Add Products">
                                 <span class="material-symbols-outlined">library_add</span> Add Item
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.archive.list.php" class="nav-links" title="Archived Products">
+                            <a href="/shoepee/products/prod.archive.list.php" class="nav-links" title="Archived Products">
                                 <span class="material-symbols-outlined">archive</span> Archived Products
                             </a>
                         </li>
@@ -285,14 +283,14 @@ if (isset($_POST['submit']))
                             </div>
                         </div>
                         <div class="account-action">
-                            <a class="log-out" href="../auth/signout.php" target="_self">
+                            <a class="log-out" href="/shoepee/auth/signout.php" target="_self">
                                 <span class="material-symbols-outlined">logout</span>Log out
                             </a>
                         </div>
                     </div>
                 </div>
             <?php } else {
-                header("Location: ../admin/auth.admin.php");
+                header("Location: /shoepee/admin/auth.admin.php");
             } ?>
         <?php } ?>
         <div class="nav-menu-container" type="desktop">
@@ -300,24 +298,24 @@ if (isset($_POST['submit']))
                 <?php if (isset($_SESSION['UserLogin'])) { ?>
                     <?php if ($_SESSION['access'] === 'admin') { ?>
                         <li class="nav-item">
-                            <a href="../products/prod.manage.php" class="nav-links" title="All Products">
+                            <a href="/shoepee/products/prod.manage.php" class="nav-links" title="All Products">
                                 <span class="material-symbols-outlined">view_cozy</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.add.php" class="nav-links" title="Add Item">
+                            <a href="/shoepee/products/prod.add.php" class="nav-links" title="Add Item">
                                 <span class="material-symbols-outlined">library_add</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/prod.archive.list.php" class="nav-links" title="Archived Products">
+                            <a href="/shoepee/products/prod.archive.list.php" class="nav-links" title="Archived Products">
                                 <span class="material-symbols-outlined">archive</span>
                             </a>
                         </li>
                         <li class="nav-item account" title="Account">
                             <div class="account-icon">
                                 <?php if (!empty($user['profile_img'])) { ?>
-                                    <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                                    <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                                 <?php } else { ?>
                                     <span class="material-symbols-outlined">shield_person</span>
                                 <?php } ?>
@@ -329,7 +327,7 @@ if (isset($_POST['submit']))
                             </div>
                         </li>
                     <?php } else { ?>
-                        <?php header("Location: ../admin/auth.admin.php"); ?>
+                        <?php header("Location: /shoepee/admin/auth.admin.php"); ?>
                     <?php } ?>
                 <?php } else { ?>
                     <li class="nav-item">
@@ -340,7 +338,7 @@ if (isset($_POST['submit']))
                     <?php if ($_SESSION['access'] === 'admin') { ?>
                         <div class="account-link-container" card-type="with-account">
                             <div class="account-link">
-                                <a href="../auth/signout.php" class="nav-links" target="_self">
+                                <a href="/shoepee/auth/signout.php" class="nav-links" target="_self">
                                     Log out
                                 </a>
                             </div>
@@ -349,7 +347,7 @@ if (isset($_POST['submit']))
                 <?php } else { ?>
                     <div class="account-link-container" card-type="no-account">
                         <div class="account-link">
-                            <a href="../admin/auth.admin.php" class="nav-links" target="_self">
+                            <a href="/shoepee/admin/auth.admin.php" class="nav-links" target="_self">
                                 Sign In
                             </a>
                         </div>
@@ -365,7 +363,7 @@ if (isset($_POST['submit']))
                 <div class="container1-chld1">
                     <div class="product-image-file-container">
                         <div class="product-image">
-                            <img src="../assets/uploads/<?php echo $products['img_url']; ?>" alt="">
+                            <img src="/shoepee/assets/uploads/<?php echo $products['img_url']; ?>" alt="">
                             <a href="" id="uploadLink"><span class="material-symbols-outlined">edit</span> Edit</a>
                         </div>
                         <input type="hidden" name="img_url" value="<?php echo $products['img_url']; ?>">
@@ -537,8 +535,8 @@ if (isset($_POST['submit']))
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="module" src="../assets/JS/script.js"></script>
-    <script type="module" src="../assets/JS/nav.js"></script>
+    <script type="module" src="/shoepee/assets/JS/script.js"></script>
+    <script type="module" src="/shoepee/assets/JS/nav.js"></script>
     <script>
         document.getElementById('sourceTextArea').value = document.getElementById('hiddenInput').value;
         function updateValue()

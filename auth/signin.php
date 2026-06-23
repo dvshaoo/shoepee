@@ -54,9 +54,11 @@ if (isset($_POST['signin'])) {
             $_SESSION['UserLogin'] = $user['password'];
             $_SESSION['access'] = $user['access'];
     
-            $redirect = ($_SESSION['access'] === 'user' ? '../home/index.php' : '../auth/signin.php');
+            $redirect = ($_SESSION['access'] === 'user' ? '/shoepee/home/index.php' : '/shoepee/products/prod.manage.php');
             header("Location: $redirect");
             exit();
+        } else {
+            $error = "Account is not active";
         }
     }
 }
@@ -68,7 +70,7 @@ if (isset($_POST['signin'])) {
 
 <head>
     <?php echo $headContent; ?>
-    <link rel="stylesheet" href="../assets/CSS/signin-signup.css">
+    <link rel="stylesheet" href="/shoepee/assets/CSS/signin-signup.css">
     <title>SHOEPEE | SIGN IN</title>
 </head>
 
@@ -79,7 +81,7 @@ if (isset($_POST['signin'])) {
         </div>
         <div class="right-container">
             <div class="form-wrapper">
-                <img class="form-logo" src="../assets/images/shoepee_logo.png" alt="">
+                <img class="form-logo" src="/shoepee/assets/images/shoepee_logo.png" alt="">
                 <h1>LOG IN</h1>
                 <form class="signin" action="" method="POST">
                     <?php echo $error; ?>
@@ -110,7 +112,7 @@ if (isset($_POST['signin'])) {
 
                     <button class="btn" value="signin" name="signin" type="submit">Log in</button>
                     <span class="signup-link">
-                        Doesn't have an account? <a class="btn-link" href="../auth/signup.php">sign up</a>
+                        Doesn't have an account? <a class="btn-link" href="/shoepee/auth/signup.php">sign up</a>
                     </span>
                 </form>
             </div>
@@ -118,6 +120,6 @@ if (isset($_POST['signin'])) {
     </div>
 
 </body>
-<script src="../assets/JS/script.js"></script>
+<script src="/shoepee/assets/JS/script.js"></script>
 
 </html>

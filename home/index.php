@@ -99,7 +99,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
     <nav>
         <div class="logo">
             <div class="logo-icon">
-                <img src="../assets/images/shoepee_logo.png" alt="shoepee logo">
+                <img src="/shoepee/assets/images/shoepee_logo.png" alt="shoepee logo">
             </div>
             <div class="logo-text">
                 <p>SHOEPEE</p>
@@ -113,12 +113,12 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                 <div class="nav-menu-container" type="mobile">
                     <ul class="nav-menu">
                         <li class="nav-item">
-                            <a href="../home/index.php" class="nav-links" title="Shop">
+                            <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                                 <span class="material-symbols-outlined">storefront</span> Shop
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/bag.php" class="nav-links" title="Bag">
+                            <a href="/shoepee/products/cart/bag.php" class="nav-links" title="Bag">
                                 <span class="material-symbols-outlined">shopping_bag</span> Bag
                                 <?php if ($totalItems != 0) { ?>
                                     <span class="badge">
@@ -128,7 +128,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/favorites/favorites.php" class="nav-links" title="Favorites">
+                            <a href="/shoepee/products/favorites/favorites.php" class="nav-links" title="Favorites">
                                 <span class="material-symbols-outlined">favorite</span> Favorites
                                 <?php if ($totalFavItems != 0) { ?>
                                     <span class="badge">
@@ -138,7 +138,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/checkout.php" class="nav-links" title="Checkout">
+                            <a href="/shoepee/products/cart/checkout.php" class="nav-links" title="Checkout">
                                 <span class="material-symbols-outlined">local_shipping</span> Checkout
                                 <?php if ($totalCheckoutItem != 0) { ?>
                                     <span class="badge">
@@ -152,39 +152,39 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                         <div class="user-account" title="Account">
                             <div class="account-icon">
                                 <?php if (!empty($user['profile_img'])) { ?>
-                                    <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                                    <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                                 <?php } else { ?>
                                     <span class="material-symbols-outlined">person</span>
                                 <?php } ?>
                             </div>
                             <div class="account-name">
-                                <a href="../user/user.account.php" target="_self">
+                                <a href="/shoepee/user/user.account.php" target="_self">
                                     <?php echo $user['username']; ?>
                                 </a>
                             </div>
                         </div>
                         <div class="account-action">
-                            <a class="log-out" href="../auth/signout.php" target="_self">
+                            <a class="log-out" href="/shoepee/auth/signout.php" target="_self">
                                 <span class="material-symbols-outlined">logout</span>Log out
                             </a>
                         </div>
                     </div>
                 </div>
             <?php } else {
-                header("Location: ../auth/signin.php");
+                header("Location: /shoepee/auth/signin.php");
             } ?>
         <?php } else { ?>
             <div class="nav-menu-container" type="mobile">
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="../home/index.php" class="nav-links" title="Shop">
+                        <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                             <span class="material-symbols-outlined">storefront</span> Shop
                         </a>
                     </li>
                 </ul>
                 <div class="account-section">
                     <div class="account-action">
-                        <a href="../auth/signin.php" target="_self">
+                        <a href="/shoepee/auth/signin.php" target="_self">
                             <span class="material-symbols-outlined">login</span>
                             Sign in
                         </a>
@@ -205,12 +205,12 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                             </form>
                         </li>
                         <li class="nav-item">
-                            <a href="../home/index.php" class="nav-links" title="Shop">
+                            <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                                 <span class="material-symbols-outlined">storefront</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/bag.php" class="nav-links" title="Bag">
+                            <a href="/shoepee/products/cart/bag.php" class="nav-links" title="Bag">
                                 <span class="material-symbols-outlined">shopping_bag</span>
                                 <?php if ($totalItems != 0) { ?>
                                     <span class="badge">
@@ -220,7 +220,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/favorites/favorites.php" class="nav-links" title="Favorites">
+                            <a href="/shoepee/products/favorites/favorites.php" class="nav-links" title="Favorites">
                                 <span class="material-symbols-outlined">favorite</span>
                                 <?php if ($totalFavItems != 0) { ?>
                                     <span class="badge">
@@ -230,7 +230,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../products/cart/checkout.php" class="nav-links" title="Checkout">
+                            <a href="/shoepee/products/cart/checkout.php" class="nav-links" title="Checkout">
                                 <span class="material-symbols-outlined">local_shipping</span>
                                 <?php if ($totalCheckoutItem != 0) { ?>
                                     <span class="badge">
@@ -242,7 +242,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                         <li class="nav-item account" title="Account" tabindex="0">
                             <div class="account-icon">
                                 <?php if (!empty($user['profile_img'])) { ?>
-                                    <img src="../assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
+                                    <img src="/shoepee/assets/images/users/<?php echo $user['profile_img']; ?>" alt="">
                                 <?php } else { ?>
                                     <span class="material-symbols-outlined">person</span>
                                 <?php } ?>
@@ -254,7 +254,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                             </div>
                         </li>
                     <?php } else {
-                        header("Location: ../auth/signin.php");
+                        header("Location: /shoepee/auth/signin.php");
                     } ?>
                 <?php } else { ?>
                     <li class="nav-item nav-item-search">
@@ -266,7 +266,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a href="../home/index.php" class="nav-links" title="Shop">
+                        <a href="/shoepee/home/index.php" class="nav-links" title="Shop">
                             <span class="material-symbols-outlined">storefront</span>
                         </a>
                     </li>
@@ -278,10 +278,10 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                     <?php if ($_SESSION['access'] == 'user') { ?>
                         <div class="account-link-container" card-type="with-account">
                             <div class="account-link">
-                                <a href="../user/user.account.php" class="nav-links" target="_self">
+                                <a href="/shoepee/user/user.account.php" class="nav-links" target="_self">
                                     Profile
                                 </a>
-                                <a href="../auth/signout.php" class="nav-links" target="_self">
+                                <a href="/shoepee/auth/signout.php" class="nav-links" target="_self">
                                     Log out
                                 </a>
                             </div>
@@ -290,7 +290,7 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                 <?php } else { ?>
                     <div class="account-link-container" card-type="no-account">
                         <div class="account-link">
-                            <a href="../auth/signin.php" class="nav-links" target="_self">
+                            <a href="/shoepee/auth/signin.php" class="nav-links" target="_self">
                                 Sign In
                             </a>
                         </div>
@@ -304,13 +304,13 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
             <div class="prod-card">
                 <div class="brand-icon">
                     <?php if ($product['brand'] === 'Nike') { ?>
-                        <img class="brand-icon-img" src="../assets/images/src/brand_logos/Nike_logo.png" alt="<?php echo $product['brand']; ?> logo">
+                        <img class="brand-icon-img" src="/shoepee/assets/images/src/brand_logos/Nike_logo.png" alt="<?php echo $product['brand']; ?> logo">
                     <?php } else if ($product['brand'] === 'Adidas') { ?>
-                        <img class="brand-icon-img" src="../assets/images/src/brand_logos/Adidas_logo.png"
+                        <img class="brand-icon-img" src="/shoepee/assets/images/src/brand_logos/Adidas_logo.png"
                                 alt="<?php echo $product['brand']; ?> logo">
                     <?php } ?>
                 </div>
-                <img class="prod-img" src="../assets/uploads/<?php echo $product['img_url']; ?>"
+                <img class="prod-img" src="/shoepee/assets/uploads/<?php echo $product['img_url']; ?>"
                     alt="<?php echo $product['model_name']; ?>">
                 <div class="prod-card-description">
                     <span class="prod-status">
@@ -324,12 +324,12 @@ $products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
                         <?php echo "$" . $product['price']; ?>
                     </p>
                 </div>
-                <a href="../products/prod.view.php?prod_id=<?php echo $product['prod_id'];?>"></a>
+                <a href="/shoepee/products/prod.view.php?prod_id=<?php echo $product['prod_id'];?>"></a>
             </div>
         <?php endforeach; ?>
     </div>
 </body>
-<script type="module" src="../assets/JS/script.js"></script>
-<script type="module" src="../assets/JS/nav.js"></script>
+<script type="module" src="/shoepee/assets/JS/script.js"></script>
+<script type="module" src="/shoepee/assets/JS/nav.js"></script>
 
 </html>
