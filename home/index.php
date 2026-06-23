@@ -56,24 +56,33 @@ filter: 0
 $search = isset($_GET['querysearch']) ? $_GET['querysearch'] : '';
 $filter = isset($_GET['queryfilter']) ? $_GET['queryfilter'] : '';
 
-if ($search && $filter)
-{
-    $prodSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' AND stock_quantity > 20 AND brand LIKE '%$filter' AND model_name LIKE '%$search%' ORDER BY RAND()";
-}
-    elseif ($search && empty($filter))
-    {
-        $prodSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' AND stock_quantity > 20 AND model_name LIKE '%$search%' ORDER BY RAND()";
-    }
-        elseif (empty($search) && $filter)
-        {
-            $prodSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' AND stock_quantity > 20 AND brand LIKE '%$filter%' ORDER BY RAND()";
-        }
-            else
-            {
-                $prodSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' AND stock_quantity > 20 ORDER BY RAND()";
-            }
+$baseSql = "SELECT * FROM tbl_products WHERE product_archive = 'FALSE' AND stock_quantity > 20";
+$conditions = "";
+$params = [];
+$types = "";
 
-$products = ($con->query($prodSql)->num_rows > 0) ? $con->query($prodSql)->fetch_all(MYSQLI_ASSOC) : [];
+if ($search && $filter) {
+    $conditions = " AND brand LIKE ? AND model_name LIKE ?";
+    $params[] = "%$filter%";
+    $params[] = "%$search%";
+    $types = "ss";
+} elseif ($search) {
+    $conditions = " AND model_name LIKE ?";
+    $params[] = "%$search%";
+    $types = "s";
+} elseif ($filter) {
+    $conditions = " AND brand LIKE ?";
+    $params[] = "%$filter%";
+    $types = "s";
+}
+
+$prodSql = $baseSql . $conditions . " ORDER BY RAND()";
+$stmtProd = $con->prepare($prodSql);
+if (!empty($params)) {
+    $stmtProd->bind_param($types, ...$params);
+}
+$stmtProd->execute();
+$products = $stmtProd->get_result()->fetch_all(MYSQLI_ASSOC);
 
 ?>
 
